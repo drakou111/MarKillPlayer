@@ -1,4 +1,31 @@
-const config = { /* same as before */ };
+const config = { lifeSecurity: {
+  base: 50,
+  fields: [
+    { label: 'Protection Radius (blocks)', name: 'radius',   type: 'number', min: 1, factor: 5 },
+    { label: 'Duration (minutes)',       name: 'duration', type: 'number', min: 1, factor: 2 }
+  ]
+},
+raidSecurity: {
+  base: 75,
+  fields: [
+    { label: 'Guard Count',             name: 'guards',     type: 'number', min: 1, factor: 10 },
+    { label: 'Patrol Time (minutes)',   name: 'patrolTime', type: 'number', min: 1, factor: 3  }
+  ]
+},
+raid: {
+  base: 100,
+  fields: [
+    { label: 'Number of Raiders',      name: 'raiders', type: 'number', min: 1, factor: 20 },
+    { label: 'Loot Value (x10 coins)', name: 'loot',    type: 'number', min: 1, factor: 10 }
+  ]
+},
+murder: {
+  base: 150,
+  fields: [
+    { label: 'Victim Level',    name: 'level',   type: 'number', min: 1, factor: 15 },
+    { label: 'Stealth Bonus (%)', name: 'stealth', type: 'number', min: 0, max: 100, factor: 1 }
+  ]
+} };
 
 const categorySelect = document.getElementById('category');
 const fieldsContainer = document.getElementById('fields-container');

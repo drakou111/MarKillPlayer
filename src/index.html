@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Minecraft Services Estimator</title>
+  <link rel="stylesheet" href="dist/styles.css" />
+</head>
+<body class="bg-black text-purple-light min-h-screen flex items-center justify-center p-6">
+  <div class="max-w-md w-full bg-purple-dark p-8 rounded-2xl shadow-2xl">
+    <h1 class="text-3xl font-bold text-white mb-6 text-center">Services Estimator</h1>
+    <form id="service-form" class="space-y-4">
+      <div>
+        <label for="category" class="block text-purple-light mb-2">Select Category</label>
+        <select id="category" class="w-full p-2 rounded-md bg-black border border-purple-light text-white">
+          <option value="">— Choose one —</option>
+          <option value="lifeSecurity">Life Security</option>
+          <option value="raidSecurity">Raid Security</option>
+          <option value="raid">Raid</option>
+          <option value="murder">Murder</option>
+        </select>
+      </div>
+      <div id="fields-container" class="space-y-4"></div>
+      <div class="pt-4 border-t border-purple-light">
+        <p class="text-xl text-white">
+          Total Price: <span id="total-price" class="font-extrabold">0</span> coins
+        </p>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

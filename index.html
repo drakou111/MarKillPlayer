@@ -1,42 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Minecraft Services Estimator</title>
+  <title>MarKillPlayer</title>
   <link rel="stylesheet" href="dist/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-  <div class="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full">
-    <h1 class="text-2xl font-bold mb-4 text-center">Minecraft Services Estimator</h1>
-    <form id="service-form" class="space-y-4">
-      <!-- Category Select -->
-      <div>
-        <label for="category" class="block text-gray-700 font-semibold mb-1">Service Category</label>
-        <select id="category" name="category"
-                class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="">— Choose one —</option>
-          <option value="lifeSecurity">Life Security</option>
-          <option value="raidSecurity">Raid Security</option>
-          <option value="raid">Raid</option>
-          <option value="murder">Murder</option>
-        </select>
-      </div>
+<body class="bg-black min-h-screen flex items-center justify-center">
+  <div class="flex space-x-6 px-4 w-full">
+    
+    <!-- Left container -->
+    <div class="bg-gradient-to-br from-purple-500 via-purple-900 to-purple-950 
+                p-6 rounded-2xl shadow-xl w-1/3 text-white">
+      <h2 class="text-2xl font-bold mb-4 text-center">Rules</h2>
+      <p class="text-purple-200 text-sm italic px-4 py-2">
+        You must follow and accept these rules and conditions.
+      </p>
+      <ol class="list-decimal list-inside bg-purple-900/40 p-4 rounded-xl text-white space-y-2 text-sm md:text-base">
+        <li><span class="font-semibold text-purple-300">50% refund</span> for failed securities.</li>
+        <li>We will <span class="italic">not</span> tell you where the player/base is if found.</li>
+        <li>We can't murder someone that is currently <span class="text-red-300">being protected</span>.</li>
+        <li>We can't raid a base that has <span class="text-red-300">raid protection</span>.</li>
+        <li>For murders and raids, we work <span class="underline">alone</span>. Do not interfere.</li>
+      </ol>
+    </div>
 
-      <!-- Dynamic Fields Container -->
-      <div id="fields-container" class="space-y-4"></div>
+    <!-- Center/main container -->
+    <div class="bg-gradient-to-br from-purple-500 via-purple-900 to-purple-950 
+                p-6 rounded-2xl shadow-xl w-1/3 text-white">
+      <h1 class="text-3xl font-extrabold mb-6 text-center">MarKillPlayer</h1>
+      <form id="service-form" class="space-y-6">
+        <!-- Category Select -->
+        <div>
+          <label for="category" 
+                 class="block text-white font-semibold mb-2">Service Category</label>
+          <select id="category" class="bg-gray-800 text-white 
+                 border border-purple-600 rounded-lg p-2 
+                 focus:ring-2 focus:ring-purple-500 focus:outline-2 focus:outline-offset-2 focus:outline-purple-500">
+            <option class="text-white" value="">— Choose one —</option>
+            <option class="text-white" value="lifeSecurity">Life Security</option>
+            <option class="text-white" value="raidSecurity">Raid Security</option>
+            <option class="text-white" value="raid">Raid</option>
+            <option class="text-white" value="murder">Murder</option>
+          </select>
+        </div>
 
-      <!-- Price Display -->
-      <div class="pt-4 border-t">
-        <p class="text-lg font-medium">Total Price: 
-           <span id="total-price" class="text-blue-600">0</span> coins
-        </p>
-      </div>
-    </form>
+        <!-- Dynamic Fields Container -->
+        <div id="fields-container" class="space-y-4"></div>
+
+        <!-- Price Display -->
+        <div class="pt-6 border-t border-purple-700">
+          <p class="text-xl font-medium">Cost: 
+            <span id="total-price" class="text-purple-300">0</span> Diamonds
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right container -->
+    <div class="bg-gradient-to-br from-purple-500 via-purple-900 to-purple-950 
+                p-6 rounded-2xl shadow-xl w-1/3 text-white">
+      <h2 class="text-2xl font-bold mb-4 text-center">Item Conversions</h2>
+      <p class="text-purple-200 text-sm italic px-4 py-2">
+        You can use these items instead of diamonds with this conversion table.
+      </p>
+      <ul class="bg-purple-900/40 p-4 rounded-xl text-white space-y-2 text-sm md:text-base divide-y divide-purple-700">
+        <li class="flex justify-between items-center py-1">
+          <span>1 Golden Apple</span>
+          <span class="text-purple-300 font-mono">→ 128 Diamonds</span>
+        </li>
+        <li class="flex justify-between items-center py-1">
+          <span>1 Netherite Ingot</span>
+          <span class="text-purple-300 font-mono">→ 32 Diamonds</span>
+        </li>
+        <li class="flex justify-between items-center py-1">
+          <span>1 Wither Skeleton Skull</span>
+          <span class="text-purple-300 font-mono">→ 64 Diamonds</span>
+        </li>
+        <li class="flex justify-between items-center py-1">
+          <span>1 Mace <b>OR</b> Heavy Core</span>
+          <span class="text-purple-300 font-mono">→ 64 Diamonds</span>
+        </li>
+        <li class="flex justify-between items-center py-1">
+          <span>1 Wind Burst I</span>
+          <span class="text-purple-300 font-mono">→ 64 Diamonds</span>
+        </li>
+      </ul>
+    </div>
+    
   </div>
-  
+
   <script src="script.js"></script>
 </body>
-
 </html>

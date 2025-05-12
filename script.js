@@ -167,7 +167,7 @@ const servicesConfig = {
       {
         key: 'murder_huntingTime',
         label: 'Max Hunting Time (minutes)',
-        info: 'How long we have to hunt the player.',
+        info: 'Max amount of time we have to hunt the player.',
         type: 'int',
         min: 1,
         operation: { op: 'add', factor: 'constant', value: 2 }

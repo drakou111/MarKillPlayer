@@ -75,7 +75,7 @@ const servicesConfig = {
       },
       {
         key: 'murder_target',
-        label: 'Base to raid.',
+        label: 'Base to raid',
         type: 'string',
         info: 'What base you want to raid. Can just be someone\'s name',
       },

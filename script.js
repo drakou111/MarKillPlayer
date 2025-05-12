@@ -2,7 +2,14 @@
 const servicesConfig = {
   lifeSecurity: {
     startingMoney: 0,
+    note: "Note:<br>- If you die from an attacker, you will be refunded 50% of the cost.",
     fields: [
+      {
+        key: 'lifeSecurity_name',
+        label: 'Your in-game name',
+        type: 'string',
+        info: 'Self explanatory.',
+      },
       {
         key: 'lifeSecurity_duration',
         label: 'Duration (minutes)',
@@ -10,12 +17,31 @@ const servicesConfig = {
         info: 'How long (in minutes) you want to have a security for.',
         min: 1,
         operation: { op: 'add', factor: 'constant', value: 2 }
+      },
+      {
+        key: 'lifeSecurity_when',
+        label: 'Preparation time',
+        info: 'How long we have to prepare before securing.',
+        type: 'enum',
+        options: [
+          { value: 0, label: 'Now (+256)' },
+          { value: 1, label: '1 Hour (+64)' },
+          { value: 2, label: '1 Day (+0)' }
+        ],
+        operation: { op: 'switch', cases: { '0': 256, '1': 64, '2' : 0 } }
       }
     ]
   },
   raidSecurity: {
     startingMoney: 0,
+    note: "Note:<br>- For every unexpected attacker to deal with will require an extra +100 Diamonds.<br>- If your base gets raided, you will be refunded 50% of the cost.",
     fields: [
+      {
+        key: 'raidSecurity_name',
+        label: 'Your in-game name',
+        type: 'string',
+        info: 'Self explanatory.',
+      },
       {
         key: 'raidSecurity_chunks',
         label: 'Number of chunks',
@@ -42,9 +68,21 @@ const servicesConfig = {
     startingMoney: 128,
     fields: [
       {
+        key: 'raid_name',
+        label: 'Your in-game name',
+        type: 'string',
+        info: 'Self explanatory.',
+      },
+      {
+        key: 'murder_target',
+        label: 'Name of the base you want to raid.',
+        type: 'string',
+        info: 'What base you want to raid. Can just be someone\'s name',
+      },
+      {
         key: 'raid_anonymity',
         label: 'Anonymity',
-        info: 'The anonymity of this hit. None = We will say that you bought this. Anonymous = No one will know. Blame = We will blame ourselves for the cause.',
+        info: 'The anonymity of this hit.<br>None = We will say that you bought this.<br>Anonymous = No one will know.<br>Blame = We will blame ourselves for the cause.',
         type: 'enum',
         options: [
           { value: 0, label: 'None (+0)' },
@@ -88,11 +126,24 @@ const servicesConfig = {
   },
   murder: {
     startingMoney: 256,
+    note: "Note:<br>- For every non-target enemy to deal with will require an extra +100 Diamonds.",
     fields: [
+      {
+        key: 'murder_name',
+        label: 'Your in-game name',
+        type: 'string',
+        info: 'Self explanatory.',
+      },
+      {
+        key: 'murder_target',
+        label: 'In-game name of your target',
+        type: 'string',
+        info: 'Who you want to kill.',
+      },
       {
         key: 'murder_anonymity',
         label: 'Anonymity',
-        info: 'The anonymity of this hit. None = We will say that you bought this. Anonymous = No one will know. Blame = We will blame ourselves for the cause.',
+        info: 'The anonymity of this hit.<br>None = We will say that you bought this.<br>Anonymous = No one will know.<br>Blame = We will blame ourselves for the cause.',
         type: 'enum',
         options: [
           { value: 0, label: 'None (+0)' },
@@ -168,11 +219,11 @@ categorySelect.addEventListener('change', () => {
       const tooltip = document.createElement('div');
       tooltip.className = `
         absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2
-        w-48 p-2 text-xs text-gray-100 bg-gray-800 rounded-lg
+        w-64 p-2 text-xs text-gray-100 bg-gray-800 rounded-lg
         opacity-0 group-hover:opacity-100 transition-opacity
         pointer-events-none
       `;
-      tooltip.textContent = f.info;
+      tooltip.innerHTML = f.info;
   
       // wrap badge in a group so hover triggers the tooltip
       infoBadge.classList.add('group');
@@ -232,8 +283,84 @@ categorySelect.addEventListener('change', () => {
     wrapper.append(labelContainer, input);
     fieldsContainer.appendChild(wrapper);
   });
+  
+  if (cfg.note) {
+    const noteWrapper = document.createElement('div');
+    noteWrapper.className = 'pt-4 border-t border-purple-700';
+    
+    const noteText = document.createElement('p');
+    noteText.className = 'mt-2 text-purple-200 text-sm italic';
+    noteText.innerHTML = cfg.note;
+    
+    noteWrapper.appendChild(noteText);
+    fieldsContainer.appendChild(noteWrapper);
+  }
 
-  calculateTotal();
+  // grab the new elements
+  const summaryEl = document.getElementById('summary');
+  const copyBtn = document.getElementById('copy-summary');
+  const form = document.getElementById('service-form');
+
+  // helper to build the summary text
+  function updateSummary() {
+    const category = document.getElementById('category');
+    const categoryLabel = category.previousElementSibling.textContent.trim();
+    const categoryValue = category.options[category.selectedIndex].text;
+  
+    const fields = Array.from(document.querySelectorAll('#fields-container > div'))
+    .map(div => {
+      const label = div.querySelector('label')?.textContent.trim() || '';
+      const input = div.querySelector('input, select, textarea');
+
+      let value = '—';
+      if (input) {
+        if (input.tagName.toLowerCase() === 'select') {
+          value = input.options[input.selectedIndex]?.text?.trim() || '—';
+        } else {
+          value = input.value?.trim() || '—';
+        }
+
+        // Treat empty values as 0
+        if (value == '—') {
+          value = '0';
+        }
+      }
+
+      return { label, value };
+    })
+    .filter(field => field.value !== '—') // skip empty or placeholder values
+    .map(field => `${field.label}: ${field.value}`);
+  
+    const cost = document.getElementById('total-price').textContent;
+  
+    const lines = [
+      `${categoryLabel}: ${categoryValue}`,
+      ...fields,
+      `Total Cost: ${cost} Diamonds`
+    ];
+  
+    summaryEl.value = lines.join('\n');
+  }
+  
+  // whenever the form changes, recalc both price and summary
+  form.addEventListener('input', () => {
+    calculateTotal();    // your existing function
+    updateSummary();     // new
+  });
+
+  // initialize on load
+  window.addEventListener('DOMContentLoaded', () => {
+    updateSummary();
+  });
+
+  // copy-to-clipboard behavior
+  copyBtn.addEventListener('click', () => {
+    summaryEl.select();
+    document.execCommand('copy');
+    copyBtn.textContent = 'Copied!';
+    setTimeout(() => copyBtn.textContent = 'Copy Summary', 1500);
+  });
+
 });
 
 function calculateTotal() {
